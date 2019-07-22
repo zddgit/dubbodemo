@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClientController {
 
 //    @Reference(url = "dubbo://127.0.0.1:20880") //直接写这个，就不需要在启动类上写@EnableDubbo
-    @Reference
+    @Reference(retries = 2,loadbalance="random")
     private ISmsService smsService;
 
     @GetMapping("test")
