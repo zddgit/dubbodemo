@@ -22,4 +22,5 @@
     <dubbo:reference interface="com.zdd.dubbo.api.ISmsService" id="smsService">
         <dubbo:method name="sendSms" onreturn="callBack.onReturn"/>
     </dubbo:reference>
+    <dubbo:reference interface="com.zdd.dubbo.server.service.OtherService" id="otherService" generic="true"/>
 </beans>

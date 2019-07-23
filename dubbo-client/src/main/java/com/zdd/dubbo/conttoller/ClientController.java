@@ -4,6 +4,7 @@ import com.zdd.dubbo.api.ISmsService;
 import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.rpc.RpcContext;
+import org.apache.dubbo.rpc.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,8 @@ public class ClientController {
 //    @Reference(retries = 2, loadbalance = "random")
     @Resource
     private ISmsService smsService;
+    @Resource
+    private GenericService otherService;
 
     //可实现并行调用
     @GetMapping("test")
@@ -33,10 +36,16 @@ public class ClientController {
         return result;
     }
 
-    //注解方式实现异步调用暂未调试通过，只能通过xml方式
+    //异步调用
     @GetMapping("test1")
     public String test1() throws InterruptedException {
        return smsService.sendSms("15136427520", "hello,dubbo1", "openjdk1");
+    }
+    //泛化调用
+    @GetMapping("test2")
+    public String test2() throws InterruptedException {
+        Object object = otherService.$invoke("sendSmsOther",new String[]{"java.lang.String","java.lang.String","java.lang.String"},new Object[]{"15136427520","hello,dubbo other","openjdk other"});
+        return object.toString();
     }
 
 
